@@ -1,54 +1,790 @@
-
-<!DOCTYPE html>
-<html lang="pt-br">
-
+<!doctype html>
+<html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1220" />
+  <meta name="description" content="Peterson Andrade — .NET/C# engineer in Funds Administration & conciliation systems. Event-driven architecture, Azure DevOps, Oracle/SQL, and creator-side projects." />
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <title>Peterson Andrade · .NET Engineer · Funds & Systems</title>
 
-    <title>Peterson's</title>
+  <style>
+    :root{
+      --bg: #070b14;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --muted2: rgba(255,255,255,.55);
+      --stroke: rgba(255,255,255,.14);
+      --stroke2: rgba(255,255,255,.08);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 22px;
 
-    <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+      --a: #7c3aed;   /* purple */
+      --b: #22d3ee;   /* cyan */
+      --c: #10b981;   /* green */
+      --d: #f97316;   /* orange */
+      --e: #f43f5e;   /* rose */
 
-    <!-- Custom CSS -->
-    <link href="css/freelancer.css" rel="stylesheet">
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
 
-    <!-- Custom Fonts -->
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background: radial-gradient(1200px 900px at 10% 10%, rgba(124,58,237,.20), transparent 55%),
+                  radial-gradient(1100px 900px at 90% 20%, rgba(34,211,238,.18), transparent 60%),
+                  radial-gradient(900px 700px at 70% 90%, rgba(16,185,129,.15), transparent 60%),
+                  linear-gradient(180deg, #050816, var(--bg) 60%, #050816);
+      overflow-x:hidden;
+    }
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    /* Subtle animated grain */
+    .grain{
+      pointer-events:none;
+      position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      opacity:.35;
+      animation: drift 12s linear infinite;
+      transform: translate3d(0,0,0);
+    }
+    @keyframes drift{
+      0%{ transform: translate3d(0,0,0); }
+      50%{ transform: translate3d(-2%, 1%, 0); }
+      100%{ transform: translate3d(0,0,0); }
+    }
 
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
+    .wrap{ max-width: var(--max); margin:0 auto; padding: 24px; }
+
+    /* Top nav */
+    .nav{
+      position: sticky; top:0; z-index:40;
+      backdrop-filter: blur(12px);
+      background: linear-gradient(180deg, rgba(7,11,20,.88), rgba(7,11,20,.55));
+      border-bottom:1px solid var(--stroke2);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+      padding: 14px 24px;
+      max-width: var(--max); margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; font-weight:750; letter-spacing:.2px;
+    }
+    .mark{
+      width:38px; height:38px; border-radius:14px;
+      background: radial-gradient(10px 10px at 25% 25%, rgba(255,255,255,.85), transparent 55%),
+                  linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.8));
+      box-shadow: var(--shadow2);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .nav-links{
+      display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .nav-links a{ padding: 8px 10px; border-radius: 12px; }
+    .nav-links a:hover{ text-decoration:none; background: rgba(255,255,255,.06); color: var(--text); }
+
+    .cta{
+      display:flex; align-items:center; gap:10px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      font-weight: 750;
+      font-size: 14px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+      text-decoration:none;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.24);
+      text-decoration:none;
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,211,238,.85));
+      border-color: rgba(255,255,255,.22);
+    }
+    .btn.primary:hover{ filter: brightness(1.05); }
+
+    /* Hero */
+    .hero{
+      padding: 34px 0 16px;
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
+      border: 1px solid var(--stroke2);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .card.pad{ padding: 22px; }
+    .badge{
+      display:inline-flex; align-items:center; gap:10px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: var(--muted);
+      font-weight: 650;
+      font-size: 13px;
+    }
+    .dot{
+      width:9px; height:9px; border-radius: 99px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.20));
+      box-shadow: 0 0 0 4px rgba(34,211,238,.12);
+    }
+    h1{
+      margin: 14px 0 12px;
+      font-size: clamp(32px, 3.4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: -0.7px;
+    }
+    .lead{
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.55;
+      max-width: 65ch;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .mini{
+      padding: 14px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .mini .k{ font-weight: 800; letter-spacing:.2px; }
+    .mini .v{ color: var(--muted); margin-top: 6px; font-size: 13.5px; line-height:1.35; }
+
+    /* Right hero panel */
+    .portrait{
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .pfp{
+      aspect-ratio: 1.6 / 1;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(120px 120px at 25% 30%, rgba(34,211,238,.22), transparent 60%),
+        radial-gradient(120px 120px at 80% 35%, rgba(124,58,237,.22), transparent 60%),
+        radial-gradient(120px 120px at 50% 80%, rgba(16,185,129,.18), transparent 60%),
+        linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      position:relative;
+      overflow:hidden;
+      box-shadow: var(--shadow2);
+    }
+    .pfp:before{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 180deg, rgba(124,58,237,.35), rgba(34,211,238,.28), rgba(16,185,129,.25), rgba(249,115,22,.22), rgba(124,58,237,.35));
+      filter: blur(18px);
+      opacity:.55;
+      animation: spin 10s linear infinite;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+    .pfp-inner{
+      position:absolute; inset:10px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding: 14px;
+      gap: 8px;
+    }
+    .pfp-title{ font-weight: 850; letter-spacing:.2px; }
+    .pfp-sub{ color: var(--muted); font-size: 13.5px; line-height:1.25; }
+
+    .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .chip{
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    /* Sections */
+    section{ padding: 14px 0; }
+    .section-head{
+      display:flex; align-items:end; justify-content:space-between; gap:14px;
+      margin: 16px 0 12px;
+    }
+    .section-head h2{
+      margin:0;
+      font-size: 20px;
+      letter-spacing: -.2px;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted2);
+      font-size: 13.5px;
+      max-width: 70ch;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .col-6{ grid-column: span 6; }
+    .col-4{ grid-column: span 4; }
+    .col-8{ grid-column: span 8; }
+    .col-12{ grid-column: span 12; }
+
+    .item{
+      padding: 16px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      position:relative;
+      overflow:hidden;
+      min-height: 118px;
+    }
+    .item:hover{
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.055);
+    }
+    .item h3{
+      margin:0 0 8px;
+      font-size: 16px;
+      letter-spacing: -.2px;
+    }
+    .item p{
+      margin:0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .meta{
+      display:flex; flex-wrap:wrap; gap:8px;
+      color: var(--muted2);
+      font-size: 12.5px;
+      font-family: var(--mono);
+    }
+    .pill{
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+    }
+
+    /* Timeline */
+    .timeline{ display:flex; flex-direction:column; gap: 10px; }
+    .trow{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+    }
+    .trow .when{
+      color: var(--muted2);
+      font-family: var(--mono);
+      font-size: 12.5px;
+      line-height:1.35;
+    }
+    .trow .what .title{
+      font-weight: 850;
+      margin-bottom: 6px;
+    }
+    .trow .what .desc{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer{
+      padding: 26px 0 44px;
+      color: var(--muted2);
+      font-size: 13px;
+    }
+    .footer-grid{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 18px;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero{ grid-template-columns: 1fr; }
+      .grid{ gap: 10px; }
+      .col-6, .col-4, .col-8{ grid-column: span 12; }
+      .trow{ grid-template-columns: 1fr; }
+      .nav-inner{ padding: 12px 16px; }
+      .wrap{ padding: 18px; }
+    }
+  </style>
 </head>
 
-<body id="page-top" class="index">
+<body>
+  <div class="grain" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#page-top">Peterson Andrade</a>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:14px; line-height:1; opacity:.92;">Peterson Andrade</div>
+          <div style="font-size:12.5px; color:var(--muted2); margin-top:4px;">.NET · Funds Systems · DevOps · Music/AV</div>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#projects">Projects</a>
+        <a href="#stack">Stack</a>
+        <a href="#content">Content</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="cta">
+        <!-- Replace these URLs with your real links -->
+        <a class="btn" href="https://github.com/" target="_blank" rel="noreferrer">GitHub ↗</a>
+        <a class="btn primary" href="#contact">Let's talk</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="card pad">
+        <span class="badge"><span class="dot" aria-hidden="true"></span> Backend engineer shipping money-moving systems</span>
+
+        <h1>
+          I build <span style="background:linear-gradient(135deg, rgba(124,58,237,1), rgba(34,211,238,1)); -webkit-background-clip:text; background-clip:text; color:transparent;">reliable .NET services</span>
+          for funds administration — and I love clean architecture.
+        </h1>
+
+        <p class="lead">
+          I work in the funds domain (conciliation, cash entries, liquidation & transfers), usually in distributed, event-driven systems.
+          On the side: SaaS experiments, worship music workflows, and church live audio/AV setups.
+        </p>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn primary" href="#projects">See projects</a>
+          <a class="btn" href="#work">What I do</a>
+          <a class="btn" href="#contact">Contact</a>
+        </div>
+
+        <div class="hero-grid">
+          <div class="mini">
+            <div class="k">Focus</div>
+            <div class="v">.NET 8+ APIs · DDD · Vertical Slice · observability · performance & reliability</div>
+          </div>
+          <div class="mini">
+            <div class="k">Domain</div>
+            <div class="v">Funds administration · cash conciliation · transfers · integrations · Oracle/SQL + Kafka</div>
+          </div>
+          <div class="mini">
+            <div class="k">DevOps</div>
+            <div class="v">Azure DevOps pipelines · config validation · CI quality gates (SonarQube)</div>
+          </div>
+          <div class="mini">
+            <div class="k">Creative</div>
+            <div class="v">Ableton/live vocals routing · Soundcraft Ui24R · worship guitar/bass workflows</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card portrait">
+        <div class="pfp" role="img" aria-label="Profile panel">
+          <div class="pfp-inner">
+            <div class="pfp-title">Systems I enjoy building</div>
+            <div class="pfp-sub">
+              Event-driven services with clear boundaries, predictable workflows, and boring-on-purpose operations.
             </div>
+          </div>
+        </div>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="chips">
+          <span class="chip">C# / .NET</span>
+          <span class="chip">Oracle / SQL</span>
+          <span class="chip">Kafka</span>
+          <span class="chip">Azure DevOps</span>
+          <span class="chip">Clean Architecture</span>
+          <span class="chip">DDD</span>
+          <span class="chip">Testing</span>
+          <span class="chip">Audio/AV</span>
+        </div>
+
+        <div class="item" style="min-height:auto;">
+          <h3 style="margin-bottom:6px;">Quick highlight</h3>
+          <p style="margin-bottom:10px;">
+            I care about <b>quality gates</b>, <b>architecture boundaries</b>, and production readiness:
+            retries, idempotency, tracing, resource cleanup, and real-world failure modes.
+          </p>
+          <div class="meta">
+            <span class="pill">reliability-first</span>
+            <span class="pill">measurable performance</span>
+            <span class="pill">clear contracts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORK -->
+    <section id="work">
+      <div class="section-head">
+        <div>
+          <h2>What I do</h2>
+          <p>Finance-grade backend engineering: predictable workflows, observable systems, clean boundaries.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="item col-6">
+          <h3>Funds conciliation & cash entry pipelines</h3>
+          <p>
+            Systems that reconcile incoming money movements, identify their origin (asset redemption vs. investor application),
+            and mark operations as liquidated with strong auditability.
+          </p>
+          <div class="meta">
+            <span class="pill">domain-driven</span>
+            <span class="pill">idempotency</span>
+            <span class="pill">audit trails</span>
+          </div>
+        </div>
+
+        <div class="item col-6">
+          <h3>Transfer orchestration & integrations</h3>
+          <p>
+            Automation that generates and tracks transfers, integrates with core banking services,
+            and closes the loop with event responses (e.g., via Kafka) to update transfer status.
+          </p>
+          <div class="meta">
+            <span class="pill">event-driven</span>
+            <span class="pill">outbox/inbox patterns</span>
+            <span class="pill">saga-ish workflows</span>
+          </div>
+        </div>
+
+        <div class="item col-4">
+          <h3>Architecture & quality</h3>
+          <p>
+            Clean Architecture / Vertical Slice decisions, tests as design, and guardrails (SonarQube, conventions, CI).
+          </p>
+          <div class="meta">
+            <span class="pill">DDD</span>
+            <span class="pill">SOLID</span>
+            <span class="pill">quality gates</span>
+          </div>
+        </div>
+
+        <div class="item col-4">
+          <h3>Performance & reliability</h3>
+          <p>
+            Connection pooling, resource lifetime (Dispose), sensible retries, timeouts, and capacity-aware design.
+          </p>
+          <div class="meta">
+            <span class="pill">Oracle/SQL</span>
+            <span class="pill">profiling</span>
+            <span class="pill">load testing</span>
+          </div>
+        </div>
+
+        <div class="item col-4">
+          <h3>Music & church AV</h3>
+          <p>
+            Live audio workflows (Soundcraft Ui24R), Ableton vocal FX routing, and practical setups for services/lives.
+          </p>
+          <div class="meta">
+            <span class="pill">Ui24R</span>
+            <span class="pill">Ableton</span>
+            <span class="pill">live mixing</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-head">
+        <div>
+          <h2>Projects</h2>
+          <p>Some real, some "weekend-lab". Replace placeholders with your actual repos when you're ready.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <a class="item col-6" href="#" onclick="return false;">
+          <h3>Chord Summary SaaS (CifraClub export → structured song data)</h3>
+          <p>
+            A REST API in C# that ingests exported chord files, normalizes sections, and generates a compact "play-ready" summary.
+          </p>
+          <div class="meta">
+            <span class="pill">C#</span>
+            <span class="pill">REST</span>
+            <span class="pill">parsing</span>
+            <span class="pill">music tooling</span>
+          </div>
+        </a>
+
+        <a class="item col-6" href="#" onclick="return false;">
+          <h3>Config Structure Validator (Azure DevOps JSON guardrail)</h3>
+          <p>
+            Validates that environment JSON files share the same schema/structure to prevent pipeline surprises and manual errors.
+          </p>
+          <div class="meta">
+            <span class="pill">CI/CD</span>
+            <span class="pill">Azure DevOps</span>
+            <span class="pill">JSON schema</span>
+            <span class="pill">DX</span>
+          </div>
+        </a>
+
+        <a class="item col-4" href="#" onclick="return false;">
+          <h3>Architecture rules for .NET</h3>
+          <p>Tests & conventions that enforce boundaries and keep your solution from quietly rotting.</p>
+          <div class="meta">
+            <span class="pill">ArchUnit</span>
+            <span class="pill">NDepend-ish</span>
+            <span class="pill">clean boundaries</span>
+          </div>
+        </a>
+
+        <a class="item col-4" href="#" onclick="return false;">
+          <h3>Load testing playbook</h3>
+          <p>Practical recipes to diagnose bottlenecks (DB connections, threadpool, timeouts, retries).</p>
+          <div class="meta">
+            <span class="pill">k6/JMeter</span>
+            <span class="pill">.NET perf</span>
+            <span class="pill">Oracle</span>
+          </div>
+        </a>
+
+        <a class="item col-4" href="#" onclick="return false;">
+          <h3>Church live stream kit guide</h3>
+          <p>A "cost-benefit" gear list + setup checklist for worship/live streaming and clean audio routing.</p>
+          <div class="meta">
+            <span class="pill">YouTube live</span>
+            <span class="pill">audio chain</span>
+            <span class="pill">workflow</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack">
+      <div class="section-head">
+        <div>
+          <h2>Stack & tools</h2>
+          <p>Things I reach for when building and operating backend services.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="item col-4">
+          <h3>Backend</h3>
+          <p>.NET · C# · ASP.NET APIs · background workers · messaging patterns.</p>
+          <div class="meta">
+            <span class="pill">idempotency</span>
+            <span class="pill">resilience</span>
+            <span class="pill">observability</span>
+          </div>
+        </div>
+        <div class="item col-4">
+          <h3>Data</h3>
+          <p>SQL performance mindset, Oracle realities, and sane resource lifecycle (Dispose).</p>
+          <div class="meta">
+            <span class="pill">Oracle</span>
+            <span class="pill">SQL Server</span>
+            <span class="pill">pooling</span>
+          </div>
+        </div>
+        <div class="item col-4">
+          <h3>Delivery</h3>
+          <p>Azure DevOps pipelines, config validation, and automated quality checks.</p>
+          <div class="meta">
+            <span class="pill">CI/CD</span>
+            <span class="pill">SonarQube</span>
+            <span class="pill">templates</span>
+          </div>
+        </div>
+
+        <div class="item col-12">
+          <h3>Architecture principles I actually use</h3>
+          <p>
+            Clear boundaries, explicit contracts, measured performance, and boring ops.
+            Prefer "simple and observable" over "clever and fragile".
+          </p>
+          <div class="meta">
+            <span class="pill">DDD (when it pays)</span>
+            <span class="pill">Vertical Slice</span>
+            <span class="pill">Clean / Hexagonal</span>
+            <span class="pill">Event-driven</span>
+            <span class="pill">Testing strategy</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT -->
+    <section id="content">
+      <div class="section-head">
+        <div>
+          <h2>Content / talks</h2>
+          <p>Drop your links here (LinkedIn posts, YouTube, conference talks, internal tech talks).</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <div class="trow">
+          <div class="when">2026 · ongoing</div>
+          <div class="what">
+            <div class="title">Senior .NET interviews: real questions & real answers</div>
+            <div class="desc">Curated Q&A covering architecture, SQL, event-driven design, Azure, and system reliability.</div>
+          </div>
+        </div>
+        <div class="trow">
+          <div class="when">2025 · internal</div>
+          <div class="what">
+            <div class="title">Team delivery demo (new features for operations)</div>
+            <div class="desc">A practical showcase: what shipped, why it matters, and how to operate it safely.</div>
+          </div>
+        </div>
+        <div class="trow">
+          <div class="when">Anytime</div>
+          <div class="what">
+            <div class="title">Church AV playbooks</div>
+            <div class="desc">Simple setup guides for Ui24R scenes, streaming audio routing, and live vocal FX.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-head">
+        <div>
+          <h2>Contact</h2>
+          <p>Replace placeholders with your real handles. This section is built to look good with minimal info.</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="item col-8">
+          <h3>Let's build something reliable</h3>
+          <p>
+            If you want help designing/operating .NET services (especially finance-grade workflows),
+            or you want to collaborate on a SaaS tool for music/AV—hit me up.
+          </p>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <!-- Replace links -->
+            <a class="btn primary" href="mailto:your.email@example.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/in/your-handle/" target="_blank" rel="noreferrer">LinkedIn ↗</a>
+            <a class="btn" href="https://github.com/your-username" target="_blank" rel="noreferrer">GitHub ↗</a>
+          </div>
+        </div>
+
+        <div class="item col-4">
+          <h3>Now</h3>
+          <p style="margin-bottom:10px;">Currently focused on:</p>
+          <div class="meta">
+            <span class="pill">cleaner pipelines</span>
+            <span class="pill">fewer production surprises</span>
+            <span class="pill">music tooling</span>
+            <span class="pill">better live audio</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-grid">
+        <div>© <span id="year"></span> Peterson Andrade. Built for GitHub Pages.</div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top ↑</a>
+          <span style="opacity:.5;">·</span>
+          <a href="#projects">Projects</a>
+          <span style="opacity:.5;">·</span>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    // Smooth scroll for in-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if(!id || id === '#') return;
+        const el = document.querySelector(id);
+        if(!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Optional: small "active section" highlight
+    const links = Array.from(document.querySelectorAll('.nav-links a'));
+    const sections = links
+      .map(l => document.querySelector(l.getAttribute('href')))
+      .filter(Boolean);
+
+    const obs = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b)=> b.intersectionRatio - a.intersectionRatio)[0];
+      if(!visible) return;
+      const id = '#' + visible.target.id;
+      links.forEach(l => {
+        const active = l.getAttribute('href') === id;
+        l.style.color = active ? 'rgba(255,255,255,.92)' : 'rgba(255,255,255,.68)';
+        l.style.background = active ? 'rgba(255,255,255,.07)' : 'transparent';
+      });
+    }, { threshold: [0.25, 0.35, 0.5], rootMargin: "-30% 0px -55% 0px" });
+
+    sections.forEach(s => obs.observe(s));
+  </script>
+</body>
+</html>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="hidden">
